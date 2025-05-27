@@ -4,23 +4,24 @@
 #include <string>
 #include <iostream>
 
+using namespace std;
+
 class GasCompany {
 private:
-	std::wstring companyName;
+	wstring companyName;
 	PriorityQueue<GasStation> stations;
 
 public:
 	GasCompany() : companyName(L"") {}
-	GasCompany(const std::wstring& name) : companyName(name) {}
+	GasCompany(const wstring& name) : companyName(name) {}
 
-	std::wstring getName() const { return companyName; }
-	void setName(const std::wstring& name) { companyName = name; }
+	wstring getName() const { return companyName; }
+	void setName(const wstring& name) { companyName = name; }
 
 	bool addStation(const GasStation& station) {
-		bool res = stations.find(station.getNumber());
-		if (res)
+		if (stations.find(station.getNumber()) != nullptr)
 		{
-			std::wcout << L"Ошибка: автозаправка с номером " << station.getNumber() << L" уже существует\n";
+			wcout << L"Ошибка: автозаправка с номером " << station.getNumber() << L" уже существует\n";
 			return false;
 		}
 		return stations.enqueue(station, station.getNumber());
@@ -35,16 +36,16 @@ public:
 	}
 
 	void display() const {
-		std::wcout << L"Бензиновая компания: " << companyName << L"\n";
+		wcout << L"Газовая компания: " << companyName << L"\n";
 		if (!stations.isEmpty()) {
 			stations.display();
 		}
 		else {
-			std::wcout << L"Нет данных об автозаправках.\n";
+			wcout << L"Список автозаправок пуст.\n";
 		}
 	}
 
-	std::wstring toString() const {
+	wstring toString() const {
 		return companyName + L"\n" + stations.toString();
 	}
 

@@ -20,9 +20,6 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="GasCompany.cpp" />
-    <ClCompile Include="task1.cpp" />
-    <ClCompile Include="task2.cpp" />
-    <ClCompile Include="task3.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="GasCompany.h" />
@@ -30,9 +27,6 @@
     <ClInclude Include="GasStation.h" />
     <ClInclude Include="PriorityQueue.h" />
     <ClInclude Include="Storage.h" />
-  </ItemGroup>
-  <ItemGroup>
-    <Text Include="data.txt" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>17.0</VCProjectVersion>

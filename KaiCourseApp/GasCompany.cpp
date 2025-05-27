@@ -5,50 +5,46 @@
 #include "GasCompany.h"
 #include "Storage.h"
 
+using namespace std;
+
 void displayMenu() {
-	std::wcout << L"\nМеню управления бензиновой компанией:\n";
-	std::wcout << L"1. Добавить автозаправку\n";
-	std::wcout << L"2. Удалить автозаправку\n";
-	std::wcout << L"3. Найти автозаправку\n";
-	std::wcout << L"4. Добавить бензоколонку\n";
-	std::wcout << L"5. Удалить бензоколонку\n";
-	std::wcout << L"6. Найти бензоколонку\n";
-	std::wcout << L"7. Изменить название компании\n";
-	std::wcout << L"8. Показать все данные\n";
-	std::wcout << L"9. Сохранить в файл\n";
-	std::wcout << L"10. Загрузить из файла\n";
-	std::wcout << L"0. Выход\n";
-	std::wcout << L"Выберите действие: ";
+	wcout << L"\nМеню управления бензиновой компанией:\n";
+	wcout << L"1. Добавить автозаправку\n";
+	wcout << L"2. Удалить автозаправку\n";
+	wcout << L"3. Найти автозаправку\n";
+	wcout << L"4. Добавить бензоколонку\n";
+	wcout << L"5. Удалить бензоколонку\n";
+	wcout << L"6. Найти бензоколонку\n";
+	wcout << L"7. Изменить название компании\n";
+	wcout << L"8. Показать все данные\n";
+	wcout << L"9. Сохранить в файл\n";
+	wcout << L"10. Загрузить из файла\n";
+	wcout << L"0. Выход\n";
+	wcout << L"Выберите действие: ";
 }
 
-int getIntInput(const std::wstring& prompt) {
+int getIntInput(const wstring& prompt) {
 	int value;
 	while (true) {
-		std::wcout << prompt;
-		std::wcin >> value;
-		if (std::wcin.fail()) {
-			std::wcin.clear();
-			std::wcin.ignore(std::numeric_limits<std::streamsize>::max(), L'\n');
-			std::wcout << L"Ошибка ввода. Пожалуйста, введите целое число.\n";
+		wcout << prompt;
+		wcin >> value;
+		if (wcin.fail()) {
+			wcin.clear();
+			wcin.ignore(numeric_limits<streamsize>::max(), L'\n');
+			wcout << L"Ошибка ввода. Пожалуйста, введите целое число.\n";
 		}
 		else {
-			std::wcin.ignore(std::numeric_limits<std::streamsize>::max(), L'\n');
+			wcin.ignore(numeric_limits<streamsize>::max(), L'\n');
 			return value;
 		}
 	}
 }
 
 int main() {
-	// Установка русской локали для корректного ввода/вывода
-	std::locale ru("ru_RU.UTF-8");
-	std::locale::global(ru);
-	std::wcout.imbue(ru);
-	std::wcin.imbue(ru);
-
-	// ВАЖНО: Для корректного отображения русских символов в консоли Windows
-	// перед запуском программы выполните команду:
-	// chcp 65001
-	// Это переключит кодировку консоли на UTF-8.
+	locale ru("ru_RU.UTF-8");
+	locale::global(ru);
+	wcout.imbue(ru);
+	wcin.imbue(ru);
 
 	GasCompany company(L"Моя Бензиновая Компания");
 	Storage storage(L"data.txt");
@@ -63,17 +59,17 @@ int main() {
 			int number = getIntInput(L"Введите номер автозаправки: ");
 			GasStation station(number);
 			if (company.addStation(station)) {
-				std::wcout << L"Автозаправка успешно добавлена.\n";
+				wcout << L"Автозаправка с номером " << number << L" успешно добавлена.\\n";
 			}
 			break;
 		}
 		case 2: {
 			int number = getIntInput(L"Введите номер автозаправки для удаления: ");
 			if (company.removeStation(number)) {
-				std::wcout << L"Автозаправка успешно удалена.\n";
+				wcout << L"Автозаправка с номером " << number << L" успешно удалена.\\n";
 			}
 			else {
-				std::wcout << L"Автозаправка с таким номером не найдена.\n";
+				wcout << L"Ошибка: не удалось удалить автозаправку с номером " << number << L". Возможно, она не существует.\\n";
 			}
 			break;
 		}
@@ -81,11 +77,11 @@ int main() {
 			int number = getIntInput(L"Введите номер автозаправки для поиска: ");
 			GasStation* station = company.findStation(number);
 			if (station) {
-				std::wcout << L"Автозаправка найдена:\n";
+				wcout << L"Автозаправка с номером " << number << L" найдена:\\n";
 				station->display();
 			}
 			else {
-				std::wcout << L"Автозаправка с таким номером не найдена.\n";
+				wcout << L"Автозаправка с номером " << number << L" не найдена.\\n";
 			}
 			break;
 		}
@@ -93,18 +89,18 @@ int main() {
 			int stationNumber = getIntInput(L"Введите номер автозаправки: ");
 			GasStation* station = company.findStation(stationNumber);
 			if (!station) {
-				std::wcout << L"Автозаправка с таким номером не найдена.\n";
+				wcout << L"Автозаправка с номером " << stationNumber << L" не найдена.\\n";
 				break;
 			}
 
 			int pumpNumber = getIntInput(L"Введите номер бензоколонки: ");
-			std::wcout << L"Введите марку бензина: ";
-			std::wstring fuelType;
-			std::getline(std::wcin, fuelType);
+			wcout << L"Введите марку бензина: ";
+			wstring fuelType;
+			getline(wcin, fuelType);
 
 			GasPump pump(pumpNumber, fuelType);
 			if (station->addPump(pump)) {
-				std::wcout << L"Бензоколонка успешно добавлена.\n";
+				wcout << L"Бензоколонка с номером " << pumpNumber << L" успешно добавлена на автозаправку " << stationNumber << L".\\n";
 			}
 			break;
 		}
@@ -112,16 +108,16 @@ int main() {
 			int stationNumber = getIntInput(L"Введите номер автозаправки: ");
 			GasStation* station = company.findStation(stationNumber);
 			if (!station) {
-				std::wcout << L"Автозаправка с таким номером не найдена.\n";
+				wcout << L"Автозаправка с номером " << stationNumber << L" не найдена.\\n";
 				break;
 			}
 
 			int pumpNumber = getIntInput(L"Введите номер бензоколонки для удаления: ");
 			if (station->removePump(pumpNumber)) {
-				std::wcout << L"Бензоколонка успешно удалена.\n";
+				wcout << L"Бензоколонка с номером " << pumpNumber << L" успешно удалена с автозаправки " << stationNumber << L".\\n";
 			}
 			else {
-				std::wcout << L"Бензоколонка с таким номером не найдена.\n";
+				wcout << L"Ошибка: не удалось удалить бензоколонку с номером " << pumpNumber << L" с автозаправки " << stationNumber << L". Возможно, она не существует.\\n";
 			}
 			break;
 		}
@@ -129,28 +125,28 @@ int main() {
 			int stationNumber = getIntInput(L"Введите номер автозаправки: ");
 			GasStation* station = company.findStation(stationNumber);
 			if (!station) {
-				std::wcout << L"Автозаправка с таким номером не найдена.\n";
+				wcout << L"Автозаправка с номером " << stationNumber << L" не найдена.\\n";
 				break;
 			}
 
 			int pumpNumber = getIntInput(L"Введите номер бензоколонки для поиска: ");
 			GasPump* pump = station->findPump(pumpNumber);
 			if (pump) {
-				std::wcout << L"Бензоколонка найдена: ";
+				wcout << L"Бензоколонка с номером " << pumpNumber << L" найдена на автозаправке " << stationNumber << L":\\n";
 				pump->display();
-				std::wcout << L"\n";
+				wcout << endl;
 			}
 			else {
-				std::wcout << L"Бензоколонка с таким номером не найдена.\n";
+				wcout << L"Бензоколонка с номером " << pumpNumber << L" не найдена на автозаправке " << stationNumber << L".\\n";
 			}
 			break;
 		}
 		case 7: {
-			std::wcout << L"Введите новое название компании: ";
-			std::wstring newName;
-			std::getline(std::wcin, newName);
+			wcout << L"Введите новое название компании: ";
+			wstring newName;
+			getline(wcin, newName);
 			company.setName(newName);
-			std::wcout << L"Название компании изменено.\n";
+			wcout << L"Название компании изменено на: " << newName << L"\n";
 			break;
 		}
 		case 8: {
@@ -159,28 +155,30 @@ int main() {
 		}
 		case 9: {
 			if (storage.saveToFile(company)) {
-				std::wcout << L"Данные успешно сохранены в файл.\n";
+				wcout << L"Данные успешно сохранены в файл " << storage.getFilePath() << L".\\n";
 			}
 			else {
-				std::wcout << L"Ошибка при сохранении в файл.\n";
+				wcout << L"Ошибка: не удалось сохранить данные в файл.\\n";
 			}
 			break;
 		}
 		case 10: {
 			if (storage.loadFromFile(company)) {
-				std::wcout << L"Данные успешно загружены из файла.\n";
+				wcout << L"Данные успешно загружены из файла " << storage.getFilePath() << L".\\n";
+				wcout << L"Загруженная компания: " << company.getName() << endl;
+				company.display();
 			}
 			else {
-				std::wcout << L"Ошибка при загрузке из файла.\n";
+				wcout << L"Ошибка: не удалось загрузить данные из файла. Файл может не существовать или быть поврежден.\\n";
 			}
 			break;
 		}
 		case 0: {
-			std::wcout << L"Выход из программы.\n";
+			wcout << L"Выход из программы.\n";
 			break;
 		}
 		default: {
-			std::wcout << L"Неверный выбор. Попробуйте снова.\n";
+			wcout << L"Неверный выбор. Попробуйте снова.\n";
 		}
 		}
 	} while (choice != 0);

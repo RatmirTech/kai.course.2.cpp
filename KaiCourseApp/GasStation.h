@@ -3,6 +3,8 @@
 #include "PriorityQueue.h"
 #include <iostream>
 
+using namespace std;
+
 class GasStation {
 private:
 	int stationNumber;
@@ -17,7 +19,7 @@ public:
 
 	bool addPump(const GasPump& pump) {
 		if (pumps.find(pump.getNumber()) != nullptr) {
-			std::wcout << L"Ошибка: колонка с номером " << pump.getNumber() << L" уже существует\n";
+			wcout << L"Ошибка: колонка с номером " << pump.getNumber() << L" уже существует\n";
 			return false;
 		}
 		return pumps.enqueue(pump, pump.getNumber());
@@ -32,12 +34,12 @@ public:
 	}
 
 	void display() const {
-		std::wcout << L"Автозаправка №" << stationNumber << L":\n";
+		wcout << L"Автозаправка №" << stationNumber << L":\n";
 		pumps.display();
 	}
 
-	std::wstring toString() const {
-		std::wstring result = std::to_wstring(stationNumber) + L"\n";
+	wstring toString() const {
+		wstring result = to_wstring(stationNumber) + L"\n";
 		result += pumps.toString();
 		return result;
 	}

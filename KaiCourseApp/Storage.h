@@ -4,54 +4,129 @@
 #include <locale>
 #include <codecvt>
 
+using namespace std;
+
 class Storage {
 private:
-	std::wstring filePath;
+	wstring filePath;
 
 public:
-	Storage(const std::wstring& path) : filePath(path) {}
+	Storage(const wstring& path) : filePath(path) {}
+
+	wstring getFilePath() const { return filePath; }
 
 	bool saveToFile(const GasCompany& company) {
-		std::wofstream file(filePath);
+		wofstream file(filePath);
 		if (!file.is_open()) return false;
 
-		file.imbue(std::locale(file.getloc(), new std::codecvt_utf8<wchar_t>));
+		file.imbue(locale(file.getloc(), new codecvt_utf8<wchar_t>));
 		file << company.toString();
 		file.close();
 		return true;
 	}
 
 	bool loadFromFile(GasCompany& company) {
-		std::wifstream file(filePath);
-		if (!file.is_open()) return false;
+		wifstream file(filePath);
+		if (!file.is_open()) {
+			return false;
+		}
 
-		file.imbue(std::locale(file.getloc(), new std::codecvt_utf8<wchar_t>));
+		file.imbue(locale(file.getloc(), new codecvt_utf8<wchar_t>));
 
-		std::wstring line;
-		getline(file, line); // Читаем название компании
-		company.setName(line);
+		GasCompany tempCompany;
+		wstring line;
 
-		while (getline(file, line)) {
-			if (line.empty()) continue;
+		if (!getline(file, line)) {
+			file.close();
+			return false;
+		}
+		tempCompany.setName(line);
 
-			int stationNumber = std::stoi(line);
-			GasStation station(stationNumber);
-
-			while (getline(file, line) && !line.empty()) {
-				size_t spacePos = line.find(L' ');
-				if (spacePos == std::wstring::npos) continue;
-
-				int pumpNumber = std::stoi(line.substr(0, spacePos));
-				std::wstring fuelType = line.substr(spacePos + 1);
-
-				GasPump pump(pumpNumber, fuelType);
-				station.addPump(pump);
+		int stationCount = 0;
+		while (true) {
+			streampos lineStartPos = file.tellg();
+			if (!getline(file, line)) {
+				if (file.eof()) {
+				}
+				else {
+				}
+				break;
 			}
 
-			company.addStation(station);
+			if (line.empty()) {
+				continue;
+			}
+
+			int stationNumber;
+			try {
+				stationNumber = stoi(line);
+			}
+			catch (const invalid_argument& ia) {
+				continue;
+			}
+			catch (const out_of_range& oor) {
+				continue;
+			}
+			GasStation station(stationNumber);
+			stationCount++;
+
+			int pumpCount = 0;
+			while (true) {
+				streampos pumpLineStartPos = file.tellg();
+				if (!getline(file, line)) {
+					if (file.eof()) {
+					}
+					else {
+					}
+					break;
+				}
+
+				if (line.empty()) {
+					file.clear();
+					file.seekg(pumpLineStartPos);
+					break;
+				}
+
+				size_t spacePos = line.find(L' ');
+
+				bool isPumpLine = false;
+				int pumpNumber = 0;
+				wstring fuelType;
+
+				if (spacePos != wstring::npos && spacePos > 0) {
+					wstring pumpNumStr = line.substr(0, spacePos);
+					try {
+						pumpNumber = stoi(pumpNumStr);
+						fuelType = line.substr(spacePos + 1);
+						isPumpLine = true;
+					}
+					catch (const invalid_argument& ia) {
+						isPumpLine = false;
+					}
+					catch (const out_of_range& oor) {
+						isPumpLine = false;
+					}
+				}
+
+				if (isPumpLine) {
+					GasPump pump(pumpNumber, fuelType);
+					if (!station.addPump(pump)) {
+					}
+					else {
+						pumpCount++;
+					}
+				}
+				else {
+					file.clear();
+					file.seekg(pumpLineStartPos);
+					break;
+				}
+			}
+			tempCompany.addStation(station);
 		}
 
 		file.close();
+		company = tempCompany;
 		return true;
 	}
 };

@@ -1,6 +1,8 @@
 #pragma once
 #include <iostream>
 
+using namespace std;
+
 template <typename T>
 class PriorityQueue {
 private:
@@ -17,8 +19,68 @@ private:
 public:
 	PriorityQueue() : head(nullptr) {}
 
-	~PriorityQueue() {
+	PriorityQueue(const PriorityQueue& other) : head(nullptr) {
+		Node* currentOther = other.head;
+		Node* lastNewNode = nullptr;
+
+		while (currentOther) {
+			Node* newNode = new Node(currentOther->data, currentOther->priority);
+			if (!head) {
+				head = newNode;
+			}
+			else {
+				lastNewNode->next = newNode;
+			}
+			lastNewNode = newNode;
+			currentOther = currentOther->next;
+		}
+	}
+
+	PriorityQueue& operator=(const PriorityQueue& other) {
+		if (this == &other) {
+			return *this;
+		}
+
 		clear();
+
+		Node* currentOther = other.head;
+		Node* lastNewNode = nullptr;
+
+		while (currentOther) {
+			Node* newNode = new Node(currentOther->data, currentOther->priority);
+			if (!head) {
+				head = newNode;
+			}
+			else {
+				lastNewNode->next = newNode;
+			}
+			lastNewNode = newNode;
+			currentOther = currentOther->next;
+		}
+		return *this;
+	}
+
+	PriorityQueue(PriorityQueue&& other) noexcept : head(other.head) {
+		other.head = nullptr;
+	}
+
+	PriorityQueue& operator=(PriorityQueue&& other) noexcept {
+		if (this == &other) {
+			return *this;
+		}
+
+		clear();
+
+		head = other.head;
+		other.head = nullptr;
+
+		return *this;
+	}
+
+	~PriorityQueue() {
+		if (head) {
+			clear();
+		}
 	}
 
 	void clear() {
@@ -104,13 +166,13 @@ public:
 		Node* current = head;
 		while (current) {
 			current->data.display();
-			std::wcout << L"\n";
+			wcout << L"\n";
 			current = current->next;
 		}
 	}
 
-	std::wstring toString() const {
-		std::wstring result;
+	wstring toString() const {
+		wstring result;
 		Node* current = head;
 		while (current) {
 			result += current->data.toString() + L"\n";
