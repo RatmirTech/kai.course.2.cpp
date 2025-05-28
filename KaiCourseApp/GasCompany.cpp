@@ -59,17 +59,17 @@ int main() {
 			int number = getIntInput(L"Введите номер автозаправки: ");
 			GasStation station(number);
 			if (company.addStation(station)) {
-				wcout << L"Автозаправка с номером " << number << L" успешно добавлена.\\n";
+				wcout << L"Автозаправка с номером " << number << L" успешно добавлена.\n";
 			}
 			break;
 		}
 		case 2: {
 			int number = getIntInput(L"Введите номер автозаправки для удаления: ");
 			if (company.removeStation(number)) {
-				wcout << L"Автозаправка с номером " << number << L" успешно удалена.\\n";
+				wcout << L"Автозаправка с номером " << number << L" успешно удалена.\n";
 			}
 			else {
-				wcout << L"Ошибка: не удалось удалить автозаправку с номером " << number << L". Возможно, она не существует.\\n";
+				wcout << L"Ошибка: не удалось удалить автозаправку с номером " << number << L". Возможно, она не существует.\n";
 			}
 			break;
 		}
@@ -77,11 +77,11 @@ int main() {
 			int number = getIntInput(L"Введите номер автозаправки для поиска: ");
 			GasStation* station = company.findStation(number);
 			if (station) {
-				wcout << L"Автозаправка с номером " << number << L" найдена:\\n";
+				wcout << L"Автозаправка с номером " << number << L" найдена:\n";
 				station->display();
 			}
 			else {
-				wcout << L"Автозаправка с номером " << number << L" не найдена.\\n";
+				wcout << L"Автозаправка с номером " << number << L" не найдена.\n";
 			}
 			break;
 		}
@@ -89,7 +89,7 @@ int main() {
 			int stationNumber = getIntInput(L"Введите номер автозаправки: ");
 			GasStation* station = company.findStation(stationNumber);
 			if (!station) {
-				wcout << L"Автозаправка с номером " << stationNumber << L" не найдена.\\n";
+				wcout << L"Автозаправка с номером " << stationNumber << L" не найдена.\n";
 				break;
 			}
 
@@ -100,7 +100,7 @@ int main() {
 
 			GasPump pump(pumpNumber, fuelType);
 			if (station->addPump(pump)) {
-				wcout << L"Бензоколонка с номером " << pumpNumber << L" успешно добавлена на автозаправку " << stationNumber << L".\\n";
+				wcout << L"Бензоколонка с номером " << pumpNumber << L" успешно добавлена на автозаправку " << stationNumber << L".\n";
 			}
 			break;
 		}
@@ -108,16 +108,16 @@ int main() {
 			int stationNumber = getIntInput(L"Введите номер автозаправки: ");
 			GasStation* station = company.findStation(stationNumber);
 			if (!station) {
-				wcout << L"Автозаправка с номером " << stationNumber << L" не найдена.\\n";
+				wcout << L"Автозаправка с номером " << stationNumber << L" не найдена.\n";
 				break;
 			}
 
 			int pumpNumber = getIntInput(L"Введите номер бензоколонки для удаления: ");
 			if (station->removePump(pumpNumber)) {
-				wcout << L"Бензоколонка с номером " << pumpNumber << L" успешно удалена с автозаправки " << stationNumber << L".\\n";
+				wcout << L"Бензоколонка с номером " << pumpNumber << L" успешно удалена с автозаправки " << stationNumber << L".\n";
 			}
 			else {
-				wcout << L"Ошибка: не удалось удалить бензоколонку с номером " << pumpNumber << L" с автозаправки " << stationNumber << L". Возможно, она не существует.\\n";
+				wcout << L"Ошибка: не удалось удалить бензоколонку с номером " << pumpNumber << L" с автозаправки " << stationNumber << L". Возможно, она не существует.\n";
 			}
 			break;
 		}
@@ -125,19 +125,19 @@ int main() {
 			int stationNumber = getIntInput(L"Введите номер автозаправки: ");
 			GasStation* station = company.findStation(stationNumber);
 			if (!station) {
-				wcout << L"Автозаправка с номером " << stationNumber << L" не найдена.\\n";
+				wcout << L"Автозаправка с номером " << stationNumber << L" не найдена.\n";
 				break;
 			}
 
 			int pumpNumber = getIntInput(L"Введите номер бензоколонки для поиска: ");
 			GasPump* pump = station->findPump(pumpNumber);
 			if (pump) {
-				wcout << L"Бензоколонка с номером " << pumpNumber << L" найдена на автозаправке " << stationNumber << L":\\n";
+				wcout << L"Бензоколонка с номером " << pumpNumber << L" найдена на автозаправке " << stationNumber << L":\n";
 				pump->display();
 				wcout << endl;
 			}
 			else {
-				wcout << L"Бензоколонка с номером " << pumpNumber << L" не найдена на автозаправке " << stationNumber << L".\\n";
+				wcout << L"Бензоколонка с номером " << pumpNumber << L" не найдена на автозаправке " << stationNumber << L".\n";
 			}
 			break;
 		}
@@ -155,21 +155,21 @@ int main() {
 		}
 		case 9: {
 			if (storage.saveToFile(company)) {
-				wcout << L"Данные успешно сохранены в файл " << storage.getFilePath() << L".\\n";
+				wcout << L"Данные успешно сохранены в файл " << storage.getFilePath() << L".\n";
 			}
 			else {
-				wcout << L"Ошибка: не удалось сохранить данные в файл.\\n";
+				wcout << L"Ошибка: не удалось сохранить данные в файл.\n";
 			}
 			break;
 		}
 		case 10: {
 			if (storage.loadFromFile(company)) {
-				wcout << L"Данные успешно загружены из файла " << storage.getFilePath() << L".\\n";
+				wcout << L"Данные успешно загружены из файла " << storage.getFilePath() << L".\n";
 				wcout << L"Загруженная компания: " << company.getName() << endl;
 				company.display();
 			}
 			else {
-				wcout << L"Ошибка: не удалось загрузить данные из файла. Файл может не существовать или быть поврежден.\\n";
+				wcout << L"Ошибка: не удалось загрузить данные из файла. Файл может не существовать или быть поврежден.\n";
 			}
 			break;
 		}
