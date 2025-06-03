@@ -46,8 +46,17 @@ int main() {
 	wcout.imbue(ru);
 	wcin.imbue(ru);
 
-	GasCompany company(L"Моя Бензиновая Компания");
+	GasCompany company(L"");
 	Storage storage(L"data.txt");
+
+	if (storage.loadFromFile(company)) {
+		wcout << L"Данные успешно загружены из файла " << storage.getFilePath() << L".\n";
+		wcout << L"Загруженная компания: " << company.getName() << endl;
+		company.display();
+	}
+	else {
+		wcout << L"Ошибка: не удалось загрузить данные из файла. Файл может не существовать или быть поврежден.\n";
+	}
 
 	int choice;
 	do {

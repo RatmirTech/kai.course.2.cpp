@@ -15,6 +15,12 @@ public:
 	GasCompany() : companyName(L"") {}
 	GasCompany(const wstring& name) : companyName(name) {}
 
+	~GasCompany() {
+		if (!stations.isEmpty()) {
+			stations.clear();
+		}
+	}
+
 	wstring getName() const { return companyName; }
 	void setName(const wstring& name) { companyName = name; }
 

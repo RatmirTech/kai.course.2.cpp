@@ -79,7 +79,11 @@ public:
 
 	~PriorityQueue() {
 		if (head) {
-			clear();
+			while (head) {
+				Node* temp = head;
+				head = head->next;
+				delete temp;
+			}
 		}
 	}
 

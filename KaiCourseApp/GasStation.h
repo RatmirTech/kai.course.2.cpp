@@ -14,6 +14,8 @@ public:
 	GasStation() : stationNumber(0) {}
 	GasStation(int num) : stationNumber(num) {}
 
+	~GasStation() { pumps.clear(); }
+
 	int getNumber() const { return stationNumber; }
 	void setNumber(int num) { stationNumber = num; }
 

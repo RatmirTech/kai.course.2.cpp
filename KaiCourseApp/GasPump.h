@@ -13,6 +13,8 @@ public:
 	GasPump() : pumpNumber(0), fuelType(L"") {}
 	GasPump(int num, const wstring& type) : pumpNumber(num), fuelType(type) {}
 
+	~GasPump() = default;
+
 	int getNumber() const { return pumpNumber; }
 	wstring getFuelType() const { return fuelType; }
 

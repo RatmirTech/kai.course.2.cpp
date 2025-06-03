@@ -15,6 +15,8 @@ public:
 
 	wstring getFilePath() const { return filePath; }
 
+	~Storage() = default;
+
 	bool saveToFile(const GasCompany& company) {
 		wofstream file(filePath);
 		if (!file.is_open()) return false;
